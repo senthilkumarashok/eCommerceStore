@@ -47,22 +47,26 @@ class Store:
         for category_name in categories:
             self.add_category(category_name)            
 
-    def add_product(self, product_name, category_name, price):        
-        for category in self.categories:
-            if category_name == category.category_name:
-                category_id = category.category_id
-            
-        self.products.append(Product(product_name, category_id, price))
+    def add_product(self, product_name, category_id, price):
+        category_name = self.get_category_name(category_id)
+        if category_name is None:
+            print("Category not found !!!")
+        else:    
+            self.products.append(Product(product_name, category_id, price))
         # print(f"Product name '{product_name}' successfully added")
 
     def del_product(self, product_id):
         isProductExist = False
         for product in self.products:
-            if product.product_id == product_id:
+            # print(f" product id is {product_id} == {product.product_id}")
+            if(product_id == product.product_id):
                 self.products.remove(product)
+                # print(" Removing product")
                 isProductExist = True
+                break
+
         if isProductExist is False:
-            print("Product does not exist")        
+            print(f"Product with id:{product_id} does not exist")        
 
     def listCategories(self):
         headers = ["CategoryId", "CategoryName"];
@@ -86,7 +90,7 @@ class Store:
 
     def listProducts(self):
         headers = ["productNo", "Name", "Category", "Price"];
-        format_row = "{:<10}   {:<10}   {:<10}      {:<10}" 
+        format_row = "{:<10}   {:<10}   {:<10}   {:<10}" 
         headerFormat = format_row.format(headers[0], headers[1], headers[2], headers[3])      
 
         format_summary = "".join(itertools.repeat("-",len(headerFormat)))
@@ -98,8 +102,9 @@ class Store:
         print(format_row.format( "==========","=======", "============", "======"))
         for product in self.products:
             header1 = "{}.".format(product.product_id)
+            header2 = self.get_category_name(product.category_id)
             header3 = "{}$".format(product.price)
-            print(format_row.format(header1,  product.product_name, self.get_category_name(product.category_id), header3)) 
+            print(format_row.format(header1,  product.product_name, header2, header3)) 
 
         print(format_summary)
         print() 
@@ -112,29 +117,27 @@ class Store:
                 break
         return categoryName    
                 
+# Initializing a store 
+store = Store()
 
+# Adding categories
+store.add_categories(["footwear", "clothing", "electronics"])
 
+# View categories
+store.listCategories()
 
-# # Initializing a store 
-# store = Store()
+# Adding products
+store.add_product("shoes", 1, 19)
+store.add_product("shirt", 2, 12)
+store.add_product("camera", 3, 11)
 
-# # Adding categories
-# store.add_categories(["footwear", "clothing", "electronics"])
+# View products
+store.listProducts()
 
-# # View categories
-# store.listCategories()
+# Delete category
+store.del_category(1)
+store.del_product(3)
 
-# # Adding products
-# store.add_product("shoes", "footwear", 19)
-# store.add_product("shirt", "clothing", 12)
-# store.add_product("camera", "electronics", 11)
-
-# # View products
-# store.listProducts()
-
-# # Delete category
-# store.del_category("clothing")
-
-# # View Products and Categories after deleting category
-# store.listCategories()
-# store.listProducts()
+# View Products and Categories after deleting category
+store.listCategories()
+store.listProducts()
