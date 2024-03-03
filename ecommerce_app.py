@@ -47,16 +47,16 @@ def remove_category(store):
 
 def add_product(store):
 	product_name = input("Enter product name: ")
-	category_name = input("Enter category name: ")
+	category_id = int(input("Enter category id: "))
 	price = float(input("Enter price : "))
-	store.add_product(product_name, category_name, price)
+	store.add_product(product_name, category_id, price)
 
 def remove_product(store):
 	product_id = input("Enter product id to remove: ")
 	store.del_product(product_id)
 	
 def handleInput(in_var, cart, store):
-	char_inputs = ["A","B","P","X","L"]
+	char_inputs = ["A","B","C","D","E","F"]
 	print()
 	if(in_var == "A"):
 		store.listCategories()
@@ -92,9 +92,9 @@ store = Store()
 store.add_categories(["footwear", "clothing", "electronics"])
 
 # Adding products
-store.add_product("shoes", "footwear", 19)
-store.add_product("shirt", "clothing", 12)
-store.add_product("camera", "electronics", 11)
+store.add_product("shoes", 1, 19)
+store.add_product("shirt", 2, 12)
+store.add_product("camera", 3, 11)
 
 while(isAppRunning):	
 	printInstructions()
