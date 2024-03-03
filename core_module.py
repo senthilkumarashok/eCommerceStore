@@ -2,7 +2,7 @@ from itertools import count
 
 class Category:
     
-    category_id_counter = count() # counter to generate sequential Ids for categoryId
+    category_id_counter = count(start=1) # counter to generate sequential Ids for categoryId
     
     def __init__(self, category_name):
         self.category_id = next(self.category_id_counter);
@@ -10,12 +10,13 @@ class Category:
 
 class Product:
     
-    product_id_counter = count() # counter to generate sequential Ids for productId
+    product_id_counter = count(start=1) # counter to generate sequential Ids for productId
     
-    def __init__(self, product_name, category_id):        
+    def __init__(self, product_name, category_id, price):        
         self.product_id = next(self.product_id_counter);
         self.product_name = product_name
         self.category_id  = category_id
+        self.price = price
 
 class ShoppingCart:
 
@@ -26,7 +27,7 @@ class ShoppingCart:
         item = (item_name, qty)
         self.items.append(item)
 
-    def display_items(self):
+    def list_items(self):
         for item in self.items:
             print(f"{item[0]} - {item[1]}")
 
@@ -37,31 +38,40 @@ class ShoppingCart:
                 break
 
 class Store:
-    
-    categories = [] # Datasource for storing categories    
-    products = [] # Datasource for storing products        
+        
+    def __init__(self):
+        self.categories = [] # Datasource for storing categories
+        self.products = [] # Datasource for storing products
     
     def add_category(self, category_name):
         self.categories.append(Category(category_name))
-        print(f"Category name '{category_name}' successfully added")
+        # print(f"Category name '{category_name}' successfully added")
 
-    def add_product(self, product_name, category_name):        
+    def add_categories(self, categories):
+        for category_name in categories:
+            self.add_category(category_name)            
+
+    def add_product(self, product_name, category_name, price):        
         for category in self.categories:
             if category_name == category.category_name:
                 category_id = category.category_id
             
-        self.products.append(Product(product_name, category_id))
-        print(f"Product name '{product_name}' successfully added")
+        self.products.append(Product(product_name, category_id, price))
+        # print(f"Product name '{product_name}' successfully added")
 
 
-    def displayCategories(self):
-        print("\nCategories")
-        print("=================") 
+    def listCategories(self):        
+        format_row = "{:<10}  {:<10}"       
+        print(format_row.format( "CategoryId", "CategoryName"))
+        print(format_row.format( "==========", "============"))
         for category in self.categories:
-            print(f"{category.category_id}. {category.category_name}")
+            header1 = "{}.".format(category.category_id)
+            print(format_row.format( header1, category.category_name))
 
-    def displayProducts(self):
-        print("\nProducts")
-        print("=================") 
+    def listProducts(self):
+        format_row = "{:<10}  {:<10}  {:<10}"       
+        print(format_row.format( "productNo", "Name", "Price"))
+        print(format_row.format( "==========","====", "======"))
         for product in self.products:
-            print(f"{product.product_id}. {product.product_name}") 
+            header1 = "{}.".format(product.product_id)
+            print(format_row.format(header1,  product.product_name, product.price)) 
