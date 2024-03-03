@@ -40,13 +40,13 @@ class ShoppingCart:
                 break
         # print(f"Removed item named '{item_name}' successfully !!!")    
         
-    
-cart = ShoppingCart()
-cart.add_item("shoes", 2, 2)
-cart.add_item("shirt", 3, 3)
-cart.add_item("shoes", 4, 4)
-cart.add_item("shoes", 5, 5)
+# We can test the module separately    
+# cart = ShoppingCart()
+# cart.add_item("shoes", 2, 2)
+# cart.add_item("shirt", 3, 3)
+# cart.add_item("shoes", 4, 4)
+# cart.add_item("shoes", 5, 5)
 
-cart.remove_item("shirt")
+# cart.remove_item("shirt")
 
-cart.list_items()
+# cart.list_items()
