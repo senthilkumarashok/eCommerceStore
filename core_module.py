@@ -117,27 +117,27 @@ class Store:
                 break
         return categoryName    
                 
-# Initializing a store 
-store = Store()
+# # Initializing a store 
+# store = Store()
 
-# Adding categories
-store.add_categories(["footwear", "clothing", "electronics"])
+# # Adding categories
+# store.add_categories(["footwear", "clothing", "electronics"])
 
-# View categories
-store.listCategories()
+# # View categories
+# store.listCategories()
 
-# Adding products
-store.add_product("shoes", 1, 19)
-store.add_product("shirt", 2, 12)
-store.add_product("camera", 3, 11)
+# # Adding products
+# store.add_product("shoes", 1, 19)
+# store.add_product("shirt", 2, 12)
+# store.add_product("camera", 3, 11)
 
-# View products
-store.listProducts()
+# # View products
+# store.listProducts()
 
-# Delete category
-store.del_category(1)
-store.del_product(3)
+# # Delete category
+# store.del_category(1)
+# store.del_product(3)
 
-# View Products and Categories after deleting category
-store.listCategories()
-store.listProducts()
+# # View Products and Categories after deleting category
+# store.listCategories()
+# store.listProducts()
