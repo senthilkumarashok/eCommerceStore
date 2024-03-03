@@ -52,7 +52,7 @@ def add_product(store):
 	store.add_product(product_name, category_id, price)
 
 def remove_product(store):
-	product_id = input("Enter product id to remove: ")
+	product_id = int(input("Enter product id to remove: "))
 	store.del_product(product_id)
 	
 def handleInput(in_var, cart, store):
