@@ -15,9 +15,4 @@ class LoginService:
         if userName in LoginService.adminCreds and LoginService.adminCreds[userName] == password:
             print("\nLogin successful!")
         else:
-            print("\nLogin invalid")        
-
-LoginService.userLogin('senkumar', 'password2')
-LoginService.userLogin('user1', 'password2')
-LoginService.adminLogin('senkumar', 'password')
-LoginService.adminLogin('admin1', 'password1')
+            print("\nLogin invalid")
