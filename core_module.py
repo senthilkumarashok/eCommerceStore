@@ -16,7 +16,7 @@ class Product:
         self.product_id = next(self.product_id_counter);
         self.product_name = product_name
         self.category_id  = category_id
-        self.price = price
+        self.price = float(price)
 
 class Store:
         
@@ -28,19 +28,19 @@ class Store:
         self.categories.append(Category(category_name))
         # print(f"Category name '{category_name}' successfully added")
 
-    def del_category(self, category_name):
-        category_to_remove = None
+    def del_category(self, category_id):
+        category_exist = False
         for category in self.categories:
-            if(category_name == category.category_name):
-                category_to_remove = category.category_id
+            if(category_id == category.category_id):
                 self.categories.remove(category)
+                category_exist = True
                 break
-        if(category_to_remove is None):
-            print("Category not found")
-        else:
+        if(category_exist is False):
+            print("Category not found !!!")        
+        else:            
             # print(f"Category found: {category_to_remove}")
             for product in self.products:
-                if(category_to_remove == product.category_id):
+                if(category_id == product.category_id):
                     self.products.remove(product)
 
     def add_categories(self, categories):
@@ -55,6 +55,14 @@ class Store:
         self.products.append(Product(product_name, category_id, price))
         # print(f"Product name '{product_name}' successfully added")
 
+    def del_product(self, product_id):
+        isProductExist = False
+        for product in self.products:
+            if product.product_id == product_id:
+                self.products.remove(product)
+                isProductExist = True
+        if isProductExist is False:
+            print("Product does not exist")        
 
     def listCategories(self):
         headers = ["CategoryId", "CategoryName"];
@@ -77,9 +85,9 @@ class Store:
         print()    
 
     def listProducts(self):
-        headers = ["productNo", "Name", "Price"];
-        format_row = "{:<10}  {:<10}  {:<10}" 
-        headerFormat = format_row.format(headers[0], headers[1], headers[2])      
+        headers = ["productNo", "Name", "Category", "Price"];
+        format_row = "{:<10}   {:<10}   {:<10}      {:<10}" 
+        headerFormat = format_row.format(headers[0], headers[1], headers[2], headers[3])      
 
         format_summary = "".join(itertools.repeat("-",len(headerFormat)))
         print(format_summary)
@@ -87,34 +95,46 @@ class Store:
         print(format_summary)
 
         print(headerFormat)
-        print(format_row.format( "==========","====", "======"))
+        print(format_row.format( "==========","=======", "============", "======"))
         for product in self.products:
             header1 = "{}.".format(product.product_id)
-            print(format_row.format(header1,  product.product_name, product.price)) 
+            header3 = "{}$".format(product.price)
+            print(format_row.format(header1,  product.product_name, self.get_category_name(product.category_id), header3)) 
 
         print(format_summary)
-        print()        
+        print() 
 
-# Initializing a store 
-store = Store()
+    def get_category_name(self, category_id):
+        categoryName = ""
+        for category in self.categories:
+            if category_id == category.category_id:
+                categoryName = category.category_name
+                break
+        return categoryName    
+                
 
-# Adding categories
-store.add_categories(["footwear", "clothing", "electronics"])
 
-# View categories
-store.listCategories()
 
-# Adding products
-store.add_product("shoes", "footwear", 19)
-store.add_product("shirt", "clothing", 12)
-store.add_product("camera", "electronics", 11)
+# # Initializing a store 
+# store = Store()
 
-# View products
-store.listProducts()
+# # Adding categories
+# store.add_categories(["footwear", "clothing", "electronics"])
 
-# Delete category
-store.del_category("clothing")
+# # View categories
+# store.listCategories()
 
-# View Products and Categories after deleting category
-store.listCategories()
-store.listProducts()
+# # Adding products
+# store.add_product("shoes", "footwear", 19)
+# store.add_product("shirt", "clothing", 12)
+# store.add_product("camera", "electronics", 11)
+
+# # View products
+# store.listProducts()
+
+# # Delete category
+# store.del_category("clothing")
+
+# # View Products and Categories after deleting category
+# store.listCategories()
+# store.listProducts()
