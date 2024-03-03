@@ -112,7 +112,9 @@ store.add_product("camera", "electronics", 11)
 # View products
 store.listProducts()
 
+# Delete category
 store.del_category("clothing")
 
+# View Products and Categories after deleting category
 store.listCategories()
 store.listProducts()
