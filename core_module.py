@@ -23,13 +23,17 @@ class ShoppingCart:
     def __init__(self):
         self.items = []
 
-    def add_item(self, item_name, qty):
+    def add_items(self, item_name, qty):
         item = (item_name, qty)
         self.items.append(item)
+        print("Added to cart successfully")
 
     def list_items(self):
-        for item in self.items:
-            print(f"{item[0]} - {item[1]}")
+        format_row = "{:<10}  {:<10}  {:<10}"       
+        print(format_row.format( "ItemNo", "ItemName", "Qty"))
+        print(format_row.format( "==========", "==========", "=========="))
+        for item in self.items:        
+            print(format_row.format( 0, item[0], item[1]))    
 
     def remove_item(self, item_name):
         for item in self.items:
@@ -37,13 +41,19 @@ class ShoppingCart:
                 self.items.remove(item)
                 break
 
+    def list_cart_price(self):
+        sum = 0
+        for item in self.items:
+            sum = sum + item.price
+        return sum           
+
 class Store:
         
     def __init__(self):
         self.categories = [] # Datasource for storing categories
         self.products = [] # Datasource for storing products
     
-    def add_category(self, category_name):
+    def add_category(self, category_name):        
         self.categories.append(Category(category_name))
         # print(f"Category name '{category_name}' successfully added")
 
