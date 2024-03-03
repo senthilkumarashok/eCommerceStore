@@ -1,52 +1,103 @@
-import itertools
+from core_module import Store
+import shopping_cart
+from login_service import LoginService
 
-class ShoppingCart:
+isAppRunning=True
 
-    def __init__(self):
-        self.items = []
-        self.cost = 0;
+print("Welcome to the Demo Marketplace")
 
-    def add_item(self, item_name, qty, price):
-        self.items.append((item_name, qty, price))
-        self.cost += qty * price
-        # print("Added to cart successfully")
+def printInstructions():
+	print()
+	print("Type 'A' to view categories")	
+	print("Type 'B' to add categories")
+	print("Type 'C' to delete a category")
+	print("Type 'D' to view products")	
+	print("Type 'E' to add products")
+	print("Type 'F' to delete product")
+	
+	print("Type 'S' to view your cart items")
+	print("Type 'R' to remove an item from your cart")
+	print("Type an item number to buy it")	
+	print("Type X to exit")	
+	
+# def loginPrompt(is_admin_user):
+# 	username = input("Enter username: ")
+# 	password = input("Enter password: ")
+	# if(is_admin_user):
+    #     LoginService.adminLogin(username, password)
+	# else:
+	# 	LoginService.userLogin(username, password)
 
-    def list_items(self):
-        headers = ["ItemNo", "ItemName", "Qty"]
-        format_row = "{:<8}  {:<10}  {:<10}"
-        headerFormat = format_row.format(headers[0], headers[1], headers[2])
+def remove_item_from_cart(cart):
+	item_idx = input("Type a cart object ID to remove")
+	cart.remove_item(item_idx)
 
-        format_summary = "".join(itertools.repeat("-",len(headerFormat)))
+def add_to_cart(cart):
+	item_id = input("Enter productNo to add: ")
+	qty = input("Enter the qty to buy: ")
+	cart.add_items(item_id, qty)
 
-        print(format_summary)
-        print("Cart Summary")
-        print(format_summary)
-        
-        print(headerFormat)
-        print(format_row.format( "=======", "==========", "======"))
-        for idx, item in enumerate(self.items):
-            header1 = "{}.".format(idx+1)
-            print(format_row.format( header1, item[0], item[1] ))    
+def add_category(store):  
+    category_name = input("Enter category name: ")
+    store.add_category(category_name)
 
-        print(format_summary)
-        print(f"Total cost: {self.cost}")
-        print(format_summary)
-        print()
+def remove_category(store):  
+    category_id = int(input("Enter category id to remove: "))
+    store.del_category(category_id)
 
-    def remove_item(self, item_name):
-        for item in self.items:
-            if item[0] == item_name:
-                self.items.remove(item)                
-                break
-        # print(f"Removed item named '{item_name}' successfully !!!")    
-        
-    
-cart = ShoppingCart()
-cart.add_item("shoes", 2, 2)
-cart.add_item("shirt", 3, 3)
-cart.add_item("shoes", 4, 4)
-cart.add_item("shoes", 5, 5)
+def add_product(store):
+	product_name = input("Enter product name: ")
+	category_name = input("Enter category name: ")
+	price = float(input("Enter price : "))
+	store.add_product(product_name, category_name, price)
 
-cart.remove_item("shirt")
+def remove_product(store):
+	product_id = input("Enter product id to remove: ")
+	store.del_product(product_id)
+	
+def handleInput(in_var, cart, store):
+	char_inputs = ["A","B","P","X","L"]
+	print()
+	if(in_var == "A"):
+		store.listCategories()
+	if(in_var == "B"):
+		add_category(store)		
+	if(in_var == "C"):
+		remove_category(store)
+	if(in_var == "D"):
+		store.listProducts()		
+	if(in_var == "E"):
+		add_product(store)		
+	if(in_var == "F"):
+		remove_product(store)			
+	if(in_var == "T"):
+		add_category(store)	
+	if(in_var == "S"):
+		cart.list_items()	
+	if(in_var == "R"):
+		remove_item_from_cart(cart)
+	if(in_var == "X"):
+		global isAppRunning
+		isAppRunning = False
+	# if in_var not in char_inputs:
+	# 	try:
+	# 		add_to_cart(cart)
+	# 	except:
+	# 		print("you have entered an illegal character!")
 
-cart.list_items()
+# Initializing a store 
+store = Store()
+
+# Adding categories
+store.add_categories(["footwear", "clothing", "electronics"])
+
+# Adding products
+store.add_product("shoes", "footwear", 19)
+store.add_product("shirt", "clothing", 12)
+store.add_product("camera", "electronics", 11)
+
+while(isAppRunning):	
+	printInstructions()
+	input_var = input("choose an item to buy(type the id)")
+	shoppingCart = shopping_cart.ShoppingCart()
+	handleInput(input_var, shoppingCart, store)
