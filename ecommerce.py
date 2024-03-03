@@ -1,10 +1,10 @@
 import core_module
-import login_service
+from login_service import LoginService
 
 print("\nWelcome to the Demo Marketplace\n")
 
 # Initializing a store 
-store = Store()
+store = core_module.Store()
 
 # Adding categories
 store.add_category("footwear")
@@ -20,7 +20,7 @@ store.add_product("camera", "electronics")
 
 store.displayProducts()
 
-userLogin('senkumar', 'password2')
-userLogin('user1', 'password2')
-adminLogin('senkumar', 'password')
-adminLogin('admin1', 'password1')
+LoginService.userLogin('senkumar', 'password2')
+LoginService.userLogin('user1', 'password2')
+LoginService.adminLogin('senkumar', 'password')
+LoginService.adminLogin('admin1', 'password1')
