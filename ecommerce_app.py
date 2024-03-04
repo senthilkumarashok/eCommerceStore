@@ -6,9 +6,11 @@ isAppRunning=True
 
 print("Welcome to the Demo Marketplace")
 
-role=0
+role = 0
+is_authenticated = False
 
 def login():
+	global role
 	role = int(input("Select your role: [Admin = 1, Customer = 2]"))
 	if(role == 1):
 		adminLogin()
@@ -16,38 +18,47 @@ def login():
 		customerLogin()	
 	else:
 		print("Invalid selection !!")	
+
+def is_admin():
+	return role == 1
+
+def is_customer():
+	return role == 2
 	
 #Admin login
 def adminLogin():
 	user_name = input("Enter admin username: ")
 	password = input("Enter admin password: ")
-	is_authenticated = LoginService.adminLogin(user_name, password)
-	if is_authenticated:
-		printInstructions()	
+	global is_authenticated
+	is_authenticated = LoginService.adminLogin(user_name, password)	
 
 #Customer login
 def customerLogin():
 	user_name = input("Enter username: ")
 	password = input("Enter password: ")
+	global is_authenticated
 	is_authenticated = LoginService.userLogin(user_name, password)
-	if is_authenticated:
-		printInstructions()	
-
-def printInstructions():
+	
+def printInstructions(cart):
 	print()
 	global role
-	if role == 1:
-		print("Type 'A' to view categories")	
-		print("Type 'B' to add categories")
-		print("Type 'C' to delete a category")
-		print("Type 'D' to view products")	
+	print("Type 'A' to view categories")	
+	print("Type 'B' to view products")
+	if is_admin():		
+		print("Type 'C' to add categories")
+		print("Type 'D' to delete a category")		
 		print("Type 'E' to add products")
 		print("Type 'F' to delete product")
-	elif role == 2:
-		print("Type 'G' to add Items to your cart")
+	elif is_customer():
+		print("Type 'G' to add items to your cart")
 		print("Type 'H' to view items in your cart")
-		print("Type 'I' to remove items in your cart")	
-	print("Type X to exit")	
+		print("Type 'I' to remove items in your cart")
+		if cart.is_empty():
+			print("Type 'J' to checkout")
+	else:
+		print("Invalid role: ", role)	
+	print("Type 'X' to exit")
+	print()
 	
 # def loginPrompt(is_admin_user):
 # 	username = input("Enter username: ")
@@ -79,7 +90,7 @@ def remove_category(store):
     store.del_category(category_id)
 
 def add_product(store):
-	product_name = input("Enter product id: ")
+	product_name = input("Enter product name: ")
 	category_id = int(input("Enter category id: "))
 	category_name = store.get_category_name(category_id)
 	if(category_name is None):
@@ -93,16 +104,16 @@ def remove_product(store):
 	store.del_product(product_id)
 	
 def handleInput(in_var, cart, store):
-	char_inputs = ["A","B","C","D","E","F","G","H","I"]
+	char_inputs = ["A","B","C","D","E","F","G","H","I","J"]
 	print()
 	if(in_var == "A"):
 		store.listCategories()
 	if(in_var == "B"):
-		add_category(store)		
-	if(in_var == "C"):
-		remove_category(store)
-	if(in_var == "D"):
 		store.listProducts()		
+	if(in_var == "C"):
+		add_category(store)			
+	if(in_var == "D"):
+		remove_category(store)
 	if(in_var == "E"):
 		add_product(store)		
 	if(in_var == "F"):
@@ -113,6 +124,8 @@ def handleInput(in_var, cart, store):
 		cart.list_items()	
 	if(in_var == "I"):
 		remove_item_from_cart(cart)
+	if(in_var == "J"):
+		cart.checkout()
 	if(in_var == "X"):
 		global isAppRunning
 		print("Thanks for visiting the Demo Marketplace")
@@ -134,10 +147,15 @@ demoStore.add_product("shoes", 1, 19)
 demoStore.add_product("shirt", 2, 12)
 demoStore.add_product("camera", 3, 11)
 
-login()
 
-while(isAppRunning):		
-	# printInstructions()
-	input_var = input("choose one of the option :")
-	shoppingCart = shopping_cart.ShoppingCart()
-	handleInput(input_var, shoppingCart, demoStore)
+while(isAppRunning):
+	if is_authenticated:
+		shoppingCart = None		
+		if is_customer:
+			shoppingCart = shopping_cart.ShoppingCart()
+		printInstructions(shoppingCart)
+		input_var = input("choose one of the option :")
+		
+		handleInput(input_var, shoppingCart, demoStore)
+	else: 
+		login()	
