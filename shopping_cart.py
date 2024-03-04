@@ -66,8 +66,10 @@ class ShoppingCart:
 # # cart.add_item("shoes", 5, 5)
 
 # cart.list_items()
+# cart.checkout()
 
 # cart.remove_item("shirt")
 # cart.remove_item("shoes")
 
 # cart.list_items()
+
