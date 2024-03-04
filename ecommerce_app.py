@@ -11,6 +11,7 @@ is_authenticated = False
 
 def login():
 	global role
+	print()
 	role = int(input("Select your role: [Admin = 1, Customer = 2]"))
 	if(role == 1):
 		adminLogin()
