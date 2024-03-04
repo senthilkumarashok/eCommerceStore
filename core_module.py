@@ -69,55 +69,69 @@ class Store:
             print(f"Product with id:{product_id} does not exist")        
 
     def listCategories(self):
-        headers = ["CategoryId", "CategoryName"];
-        format_row = "{:<10}  {:<10}"
-        headerFormat = format_row.format(headers[0], headers[1])
+        if len(self.categories) == 0: 
+            print("categories does not exist !!!")
+        else:
+            headers = ["CategoryId", "CategoryName"];
+            format_row = "{:<10}  {:<10}"
+            headerFormat = format_row.format(headers[0], headers[1])
 
-        format_summary = "".join(itertools.repeat("-",len(headerFormat)))
-        print(format_summary)
-        print("View Categories")
-        print(format_summary)
-                
-        
-        print(headerFormat)        
-        print(format_row.format( "__________", "____________"))        
-        for category in self.categories:
-            header1 = "{}.".format(category.category_id)
-            print(format_row.format( header1, category.category_name))
+            format_summary = "".join(itertools.repeat("-",len(headerFormat)))
+            print(format_summary)
+            print("View Categories")
+            print(format_summary)
+                    
+            
+            print(headerFormat)        
+            print(format_row.format( "__________", "____________"))        
+            for category in self.categories:
+                header1 = "{}.".format(category.category_id)
+                print(format_row.format( header1, category.category_name))
 
-        print(format_summary)
-        print()    
+            print(format_summary)
+            print()    
 
     def listProducts(self):
-        headers = ["productNo", "Name", "Category", "Price"];
-        format_row = "{:<10}   {:<10}   {:<10}   {:<10}" 
-        headerFormat = format_row.format(headers[0], headers[1], headers[2], headers[3])      
+        if len(self.products) == 0: 
+            print("products does not exist !!!")
+        else:
+            headers = ["productNo", "Name", "Category", "Price"];
+            format_row = "{:<10}   {:<10}   {:<10}   {:<10}" 
+            headerFormat = format_row.format(headers[0], headers[1], headers[2], headers[3])      
 
-        format_summary = "".join(itertools.repeat("-",len(headerFormat)))
-        print(format_summary)
-        print("View Products")
-        print(format_summary)
+            format_summary = "".join(itertools.repeat("-",len(headerFormat)))
+            print(format_summary)
+            print("View Products")
+            print(format_summary)
 
-        print(headerFormat)
-        print(format_row.format( "==========","=======", "============", "======"))
-        for product in self.products:
-            header1 = "{}.".format(product.product_id)
-            header2 = self.get_category_name(product.category_id)
-            header3 = "{}$".format(product.price)
-            print(format_row.format(header1,  product.product_name, header2, header3)) 
+            print(headerFormat)
+            print(format_row.format( "==========","=======", "============", "======"))
+            for product in self.products:
+                header1 = "{}.".format(product.product_id)
+                header2 = self.get_category_name(product.category_id)
+                header3 = "{}$".format(product.price)
+                print(format_row.format(header1,  product.product_name, header2, header3)) 
 
-        print(format_summary)
-        print() 
+            print(format_summary)
+            print() 
 
     def get_category_name(self, category_id):
-        categoryName = ""
+        categoryName = None
         for category in self.categories:
             if category_id == category.category_id:
                 categoryName = category.category_name
                 break
-        return categoryName    
+        return categoryName 
+
+    def get_product_by_id(self, product_id):
+        productDetails = None
+        for product in self.products:
+            if product_id == product.product_id:
+                productDetails = product
+                break
+        return productDetails    
                 
-# # Initializing a store 
+# Initializing a store 
 # store = Store()
 
 # # Adding categories
