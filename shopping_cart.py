@@ -49,6 +49,15 @@ class ShoppingCart:
                 self.items.remove(item)                
                 break
         # print(f"Removed item named '{item_name}' successfully !!!")    
+            
+    def is_empty(self):
+        return len(self.items) > 0        
+            
+    def checkout(self):
+        self.list_items()
+        print("Your order is successfully placed")
+        print(f"You will be shortly redirected to the portal for Unified Payment Interface to make a payment of Rs. {self.cost}")
+
         
 # # We can test the module separately    
 # cart = ShoppingCart()
