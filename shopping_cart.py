@@ -7,18 +7,18 @@ class CartItem:
         self.price = price
           
 class ShoppingCart:
-
+    
     def __init__(self):
-        self.items = []
-        self.cost = 0;
+        self._items = []
+        self.cost = 0
 
     def add_item(self, item_name, qty, price):
-        self.items.append(CartItem(item_name, qty, price))
+        self._items.append(CartItem(item_name, qty, price))
         self.cost += qty * price
-        print("Added item to cart successfully !!") 
+        print("Added item to cart successfully !!", len(self._items)) 
     
-    def list_items(self):
-        if (len(self.items) == 0): 
+    def list_items_in_cart(self):
+        if (len(self._items) == 0): 
             print("cart is empty !!!")
         else:    
             headers = ["ItemNo", "ItemName", "Qty"]
@@ -34,7 +34,7 @@ class ShoppingCart:
             print(headerFormat)
             print(format_row.format( "=======", "==========", "======"))
             
-            for idx, item in enumerate(self.items):
+            for idx, item in enumerate(self._items):
                 header1 = "{}.".format(idx+1)
                 print(format_row.format( header1, item.item_name, item.qty ))    
 
@@ -44,17 +44,18 @@ class ShoppingCart:
             print()
 
     def remove_item(self, item_name):
-        for item in self.items:
+        for item in self._items:            
             if item.item_name == item_name:
-                self.items.remove(item)                
+                print(f"Removing item {item_name}")
+                self._items.remove(item)                
                 break
         # print(f"Removed item named '{item_name}' successfully !!!")    
             
     def is_empty(self):
-        return len(self.items) > 0        
+        return len(self._items) > 0        
             
     def checkout(self):
-        self.list_items()
+        # self.list_items_in_cart()
         print("Your order is successfully placed")
         print(f"You will be shortly redirected to the portal for Unified Payment Interface to make a payment of Rs. {self.cost}")
 
@@ -65,11 +66,11 @@ class ShoppingCart:
 # cart.add_item("shirt", 3, 3)
 # # cart.add_item("shoes", 5, 5)
 
-# cart.list_items()
+# cart.list_items_in_cart()
 # cart.checkout()
 
 # cart.remove_item("shirt")
 # cart.remove_item("shoes")
 
-# cart.list_items()
+# cart.list_items_in_cart()
 
