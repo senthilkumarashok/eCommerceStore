@@ -1,57 +1,64 @@
 import itertools
 
+
 class Category:
-    
-    category_id_counter = itertools.count(start=1) # counter to generate sequential Ids for categoryId
-    
+
+    category_id_counter = itertools.count(
+        start=1
+    )  # counter to generate sequential Ids for categoryId
+
     def __init__(self, category_name):
-        self.category_id = next(self.category_id_counter);
-        self.category_name = category_name;
+        self.category_id = next(self.category_id_counter)
+        self.category_name = category_name
+
 
 class Product:
-    
-    product_id_counter = itertools.count(start=1) # counter to generate sequential Ids for productId
-    
-    def __init__(self, product_name, category_id, price):        
-        self.product_id = next(self.product_id_counter);
+
+    product_id_counter = itertools.count(
+        start=1
+    )  # counter to generate sequential Ids for productId
+
+    def __init__(self, product_name, category_id, price):
+        self.product_id = next(self.product_id_counter)
         self.product_name = product_name
-        self.category_id  = category_id
+        self.category_id = category_id
         self.price = float(price)
 
+
 class Store:
-        
+
     def __init__(self):
-        self.categories = [] # Datasource for storing categories
-        self.products = [] # Datasource for storing products
-    
-    def add_category(self, category_name):    
+        self.categories = []  # Datasource for storing categories
+        self.products = []  # Datasource for storing products
+
+    def add_category(self, category_name):
         self.categories.append(Category(category_name))
         # print(f"Category name '{category_name}' successfully added")
 
     def del_category(self, category_id):
         category_exist = False
         for category in self.categories:
-            if(category_id == category.category_id):
+            if category_id == category.category_id:
                 self.categories.remove(category)
                 category_exist = True
                 break
-        if(category_exist is False):
-            print("Category not found !!!")        
-        else:            
+        if category_exist is False:
+            print("Category not found !!!")
+        else:
             # print(f"Category found: {category_to_remove}")
             for product in self.products:
-                if(category_id == product.category_id):
+                if category_id == product.category_id:
                     self.products.remove(product)
 
     def add_categories(self, categories):
         for category_name in categories:
-            self.add_category(category_name)            
+            self.add_category(category_name)
 
     def add_product(self, product_name, category_id, price):
         category_name = self.get_category_name(category_id)
         if category_name is None:
             print("Category not found !!!")
-        else:    
+        else:
             self.products.append(Product(product_name, category_id, price))
         # print(f"Product name '{product_name}' successfully added")
 
@@ -59,61 +66,64 @@ class Store:
         isProductExist = False
         for product in self.products:
             # print(f" product id is {product_id} == {product.product_id}")
-            if(product_id == product.product_id):
+            if product_id == product.product_id:
                 self.products.remove(product)
                 # print(" Removing product")
                 isProductExist = True
                 break
 
         if isProductExist is False:
-            print(f"Product with id:{product_id} does not exist")        
+            print(f"Product with id:{product_id} does not exist")
 
     def listCategories(self):
-        if len(self.categories) == 0: 
+        if len(self.categories) == 0:
             print("categories does not exist !!!")
         else:
-            headers = ["CategoryId", "CategoryName"];
+            headers = ["CategoryId", "CategoryName"]
             format_row = "{:<10}  {:<10}"
             headerFormat = format_row.format(headers[0], headers[1])
 
-            format_summary = "".join(itertools.repeat("-",len(headerFormat)))
+            format_summary = "".join(itertools.repeat("-", len(headerFormat)))
             print(format_summary)
             print("View Categories")
             print(format_summary)
-                    
-            
-            print(headerFormat)        
-            print(format_row.format( "__________", "____________"))        
+
+            print(headerFormat)
+            print(format_row.format("__________", "____________"))
             for category in self.categories:
                 header1 = "{}.".format(category.category_id)
-                print(format_row.format( header1, category.category_name))
+                print(format_row.format(header1, category.category_name))
 
             print(format_summary)
-            print()    
+            print()
 
     def listProducts(self):
-        if len(self.products) == 0: 
+        if len(self.products) == 0:
             print("products does not exist !!!")
         else:
-            headers = ["productNo", "Name", "Category", "Price"];
-            format_row = "{:<10}   {:<10}   {:<10}   {:<10}" 
-            headerFormat = format_row.format(headers[0], headers[1], headers[2], headers[3])      
+            headers = ["productNo", "Name", "Category", "Price"]
+            format_row = "{:<10}   {:<10}   {:<10}   {:<10}"
+            headerFormat = format_row.format(
+                headers[0], headers[1], headers[2], headers[3]
+            )
 
-            format_summary = "".join(itertools.repeat("-",len(headerFormat)))
+            format_summary = "".join(itertools.repeat("-", len(headerFormat)))
             print(format_summary)
             print("View Products")
             print(format_summary)
 
             print(headerFormat)
-            print(format_row.format( "==========","=======", "============", "======"))
+            print(format_row.format("==========", "=======", "============", "======"))
             for product in self.products:
                 header1 = "{}.".format(product.product_id)
                 header2 = self.get_category_name(product.category_id)
                 header3 = "{}$".format(product.price)
-                print(format_row.format(header1,  product.product_name, header2, header3)) 
+                print(
+                    format_row.format(header1, product.product_name, header2, header3)
+                )
 
             print(format_summary)
-            print() 
+            print()
 
     def get_category_name(self, category_id):
         categoryName = None
@@ -121,7 +131,7 @@ class Store:
             if category_id == category.category_id:
                 categoryName = category.category_name
                 break
-        return categoryName 
+        return categoryName
 
     def get_product_by_id(self, product_id):
         productDetails = None
@@ -129,9 +139,10 @@ class Store:
             if product_id == product.product_id:
                 productDetails = product
                 break
-        return productDetails    
-                
-# Initializing a store 
+        return productDetails
+
+
+# Initializing a store
 # store = Store()
 
 # # Adding categories
